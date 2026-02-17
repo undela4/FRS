@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center py-12">
+    <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+        Facial Recognition System
+    </h1>
+    <p class="mt-5 max-w-xl mx-auto text-xl text-gray-500">
+        Secure, fast, and accurate face registration and verification using DeepFace and FastAPI.
+    </p>
+    <div class="mt-8 flex justify-center gap-4">
+        <a href="/register"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700">
+            Register New Face
+        </a>
+        <a href="/verify"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
+            Verify Identity
+        </a>
+    </div>
+
+    <div class="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="pt-6">
+            <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8">
+                <div class="-mt-6">
+                    <div>
+                        <span class="inline-flex items-center justify-center p-3 bg-indigo-500 rounded-md shadow-lg">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                            </svg>
+                        </span>
+                    </div>
+                    <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">Registration</h3>
+                    <p class="mt-5 text-base text-gray-500">
+                        Upload a photo to register a new user. Their facial embedding is securely stored.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-6">
+            <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8">
+                <div class="-mt-6">
+                    <div>
+                        <span class="inline-flex items-center justify-center p-3 bg-indigo-500 rounded-md shadow-lg">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </span>
+                    </div>
+                    <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">Verification</h3>
+                    <p class="mt-5 text-base text-gray-500">
+                        Upload a new photo to verify if it matches a registered user.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-6">
+            <div class="flow-root bg-gray-50 rounded-lg px-6 pb-8">
+                <div class="-mt-6">
+                    <div>
+                        <span class="inline-flex items-center justify-center p-3 bg-indigo-500 rounded-md shadow-lg">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                            </svg>
+                        </span>
+                    </div>
+                    <h3 class="mt-8 text-lg font-medium text-gray-900 tracking-tight">Storage</h3>
+                    <p class="mt-5 text-base text-gray-500">
+                        Embeddings are stored in PostgreSQL for fast retrieval and comparison.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

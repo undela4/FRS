@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
+
 <body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col">
 
     <!-- Navbar -->
@@ -17,38 +21,236 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex">
+                    <!-- Logo -->
                     <div class="flex-shrink-0 flex items-center">
+                        <div
+                            class="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold mr-2">
+                            FR
+                        </div>
                         <a href="/" class="text-xl font-bold text-indigo-600">FRS Demo</a>
                     </div>
-                    <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="/" class="border-transparent text-gray-500 hover:border-indigo-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+
+                    <!-- Navigation Links with Increased Spacing -->
+                    <div class="hidden sm:ml-12 sm:flex sm:space-x-10">
+                        <a href="/"
+                            class="border-transparent text-gray-500 hover:border-indigo-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
                             Home
                         </a>
-                        <a href="/register" class="border-transparent text-gray-500 hover:border-indigo-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Register
+                        <a href="/add_faces"
+                            class="border-transparent text-gray-500 hover:border-indigo-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
+                            Add Faces
                         </a>
-                        <a href="/verify" class="border-transparent text-gray-500 hover:border-indigo-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                            Verify
+                        <a href="/verification"
+                            class="border-transparent text-gray-500 hover:border-indigo-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
+                            Verification
+                        </a>
+                        <a href="/users"
+                            class="border-transparent text-gray-500 hover:border-indigo-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
+                            Manage Users
+                        </a>
+                        <a href="/logs"
+                            class="border-transparent text-gray-500 hover:border-indigo-500 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
+                            Match Logs
                         </a>
                     </div>
                 </div>
+                <!-- Right Side: Settings -->
+                <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                    <button id="openConfigBtn"
+                        class="bg-white p-2 rounded-md text-gray-500 hover:text-indigo-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium text-sm transition-colors border border-gray-200 shadow-sm flex items-center">
+                        <svg class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Global Settings
+                    </button>
+                </div>
             </div>
+        </div>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 mb-16">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200 mt-auto">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <p class="text-center text-sm text-gray-500">
-                &copy; 2024 Facial Recognition System Demo.
-            </p>
-        </div>
-    </footer>
+    <!-- Global Config Modal -->
+    <div id="configModal" class="hidden relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+            <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                <div
+                    class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-gray-100">
+                    <div
+                        class="bg-gradient-to-r from-indigo-50 to-white px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="text-xl font-bold text-indigo-800" id="modal-title">System Configuration</h3>
+                        <button type="button" id="closeConfigModalTop" class="text-gray-400 hover:text-gray-500">
+                            <span class="sr-only">Close</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="bg-white px-6 pt-5 pb-6">
+                        <p class="text-sm text-gray-500 mb-6 bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                            <span class="font-bold text-yellow-700">Warning:</span> Changing the recognition model
+                            implies that any previously saved face embeddings in the database will no longer match
+                            correctly!
+                        </p>
 
+                        <div class="space-y-6">
+                            <div>
+                                <label for="configModelSelect" class="block text-sm font-bold text-gray-700">Facial
+                                    Recognition Model</label>
+                                <select id="configModelSelect"
+                                    class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2 px-3 border bg-gray-50">
+                                    <option value="Facenet512">Facenet512 (Recommended)</option>
+                                    <option value="VGG-Face">VGG-Face</option>
+                                    <option value="Facenet">Facenet</option>
+                                    <option value="OpenFace">OpenFace</option>
+                                    <option value="DeepFace">DeepFace</option>
+                                    <option value="DeepID">DeepID</option>
+                                    <option value="ArcFace">ArcFace</option>
+                                    <option value="Dlib">Dlib</option>
+                                    <option value="SFace">SFace</option>
+                                    <option value="GhostFaceNet">GhostFaceNet</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-2">Enabled Prediction
+                                    Tasks</label>
+                                <div class="grid grid-cols-2 gap-3 bg-gray-50 p-3 rounded-md border border-gray-200">
+                                    <label class="flex items-center space-x-2 cursor-pointer">
+                                        <input type="checkbox" id="taskAge" value="age"
+                                            class="config-task rounded text-indigo-600 focus:ring-indigo-500 h-4 w-4">
+                                        <span class="text-sm text-gray-700 font-medium">Age</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 cursor-pointer">
+                                        <input type="checkbox" id="taskGender" value="gender"
+                                            class="config-task rounded text-indigo-600 focus:ring-indigo-500 h-4 w-4">
+                                        <span class="text-sm text-gray-700 font-medium">Gender</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 cursor-pointer">
+                                        <input type="checkbox" id="taskRace" value="race"
+                                            class="config-task rounded text-indigo-600 focus:ring-indigo-500 h-4 w-4">
+                                        <span class="text-sm text-gray-700 font-medium">Race / Ethnicity</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 cursor-pointer">
+                                        <input type="checkbox" id="taskEmotion" value="emotion"
+                                            class="config-task rounded text-indigo-600 focus:ring-indigo-500 h-4 w-4">
+                                        <span class="text-sm text-gray-700 font-medium">Emotion</span>
+                                    </label>
+                                </div>
+                                <p class="mt-2 text-xs text-gray-500">Note: Enabling more prediction tasks will slightly
+                                    increase processing time.</p>
+                            </div>
+                        </div>
+
+                        <div id="configStatusMessage" class="hidden mt-4 text-sm font-medium p-2 rounded text-center">
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-6 py-4 flex flex-row-reverse border-t border-gray-100">
+                        <button type="button" id="saveConfigBtn"
+                            class="inline-flex w-full justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 sm:ml-3 sm:w-auto transition-colors">
+                            Save Configuration
+                        </button>
+                        <button type="button" id="closeConfigModalBtn"
+                            class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global Settings Modal Logic
+        const configModal = document.getElementById('configModal');
+        const openConfigBtn = document.getElementById('openConfigBtn');
+        const closeConfigModalBtn = document.getElementById('closeConfigModalBtn');
+        const closeConfigModalTop = document.getElementById('closeConfigModalTop');
+        const saveConfigBtn = document.getElementById('saveConfigBtn');
+
+        const configModelSelect = document.getElementById('configModelSelect');
+        const configTaskCheckboxes = document.querySelectorAll('.config-task');
+        const configStatusMessage = document.getElementById('configStatusMessage');
+
+        async function fetchConfig() {
+            try {
+                const res = await fetch('/config');
+                const config = await res.json();
+
+                // Populate Modal
+                configModelSelect.value = config.model_name;
+
+                configTaskCheckboxes.forEach(cb => {
+                    cb.checked = config.tasks.includes(cb.value);
+                });
+            } catch (err) {
+                console.error("Failed to fetch settings.");
+            }
+        }
+
+        openConfigBtn.addEventListener('click', async () => {
+            await fetchConfig();
+            configStatusMessage.classList.add('hidden');
+            configModal.classList.remove('hidden');
+        });
+
+        function hideConfigModal() {
+            configModal.classList.add('hidden');
+        }
+
+        closeConfigModalBtn.addEventListener('click', hideConfigModal);
+        closeConfigModalTop.addEventListener('click', hideConfigModal);
+
+        saveConfigBtn.addEventListener('click', async () => {
+            // Gather selected tasks
+            const selectedTasks = [];
+            configTaskCheckboxes.forEach(cb => {
+                if (cb.checked) selectedTasks.push(cb.value);
+            });
+
+            // Warn if no tasks, but allow it
+
+            saveConfigBtn.disabled = true;
+            saveConfigBtn.textContent = "Saving...";
+
+            try {
+                const response = await fetch('/config', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        model_name: configModelSelect.value,
+                        tasks: selectedTasks
+                    })
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    configStatusMessage.textContent = data.message;
+                    configStatusMessage.className = "mt-4 text-sm font-medium p-2 rounded text-center bg-green-100 text-green-800 break-words";
+                    setTimeout(hideConfigModal, 1500);
+                } else {
+                    configStatusMessage.textContent = data.detail || "Error saving configuration.";
+                    configStatusMessage.className = "mt-4 text-sm font-medium p-2 rounded text-center bg-red-100 text-red-800 break-words";
+                }
+            } catch (e) {
+                configStatusMessage.textContent = "Network Error.";
+                configStatusMessage.className = "mt-4 text-sm font-medium p-2 rounded text-center bg-red-100 text-red-800 break-words";
+            } finally {
+                saveConfigBtn.disabled = false;
+                saveConfigBtn.textContent = "Save Configuration";
+                configStatusMessage.classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
+
 </html>

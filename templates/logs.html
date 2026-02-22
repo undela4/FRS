@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Match Logs Dashboard</h1>
+        <button id="refreshBtn"
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-md shadow-sm flex items-center">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                </path>
+            </svg>
+            Refresh Logs
+        </button>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col"
+                        class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Time
+                    </th>
+                    <th scope="col"
+                        class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">User ID
+                        / Name</th>
+                    <th scope="col"
+                        class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                        Confidence Level</th>
+                    <th scope="col"
+                        class="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Source
+                        Camera</th>
+                </tr>
+            </thead>
+            <tbody id="logsTableBody" class="bg-white divide-y divide-gray-200">
+                <tr>
+                    <td colspan="4" class="px-6 py-8 whitespace-nowrap text-sm text-gray-500 text-center">Loading
+                        logs...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    async function loadFullLogs() {
+        const tbody = document.getElementById('logsTableBody');
+        tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 whitespace-nowrap text-sm text-gray-500 text-center">Loading logs...</td></tr>';
+
+        try {
+            const response = await fetch('/logs/matches');
+            const logs = await response.json();
+
+            if (logs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 whitespace-nowrap text-sm text-gray-500 text-center">No structural matches found yet. Empty database.</td></tr>';
+                return;
+            }
+
+            let html = '';
+            logs.forEach(log => {
+                const dateObj = new Date(log.timestamp);
+                const dateStr = dateObj.toLocaleDateString() + ' ' + dateObj.toLocaleTimeString();
+
+                let confidenceHtml = '';
+                if (log.confidence_score !== null) {
+                    const accuracy = Math.max(0, (1 - log.confidence_score) * 100).toFixed(1);
+
+                    let bgClass = 'bg-yellow-100 text-yellow-800';
+                    if (accuracy > 85) bgClass = 'bg-green-100 text-green-800';
+                    else if (accuracy < 60) bgClass = 'bg-red-100 text-red-800';
+
+                    confidenceHtml = `<span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${bgClass}">${accuracy}%</span>`;
+                } else {
+                    confidenceHtml = `<span class="text-gray-400 italic">Unknown</span>`;
+                }
+
+                const name = log.user_id ? `User Profile #${log.user_id}` : '<span class="text-red-500 font-bold">Unrecognized Individual</span>';
+
+                // Highlight row briefly if new
+                html += `
+                    <tr class="hover:bg-gray-50 transition-colors duration-150">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">${dateStr}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">${confidenceHtml}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${log.source}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        } catch (err) {
+            console.error(err);
+            tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 whitespace-nowrap text-sm text-red-500 text-center">Failed to load logs.</td></tr>';
+        }
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', loadFullLogs);
+
+    // Initial load
+    loadFullLogs();
+</script>
+{% endblock %}
